@@ -1,7 +1,5 @@
 package com.zendesk.client.v1;
 
-import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.text.MessageFormat;
 
 public class ZendeskResponseException extends RuntimeException {
