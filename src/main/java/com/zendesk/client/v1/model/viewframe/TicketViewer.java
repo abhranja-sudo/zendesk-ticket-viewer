@@ -2,7 +2,7 @@ package com.zendesk.client.v1.model.viewframe;
 
 import com.zendesk.client.v1.model.ticket.Ticket;
 
-public class TicketViewer {
+public final class TicketViewer {
 
     private Ticket ticket;
 

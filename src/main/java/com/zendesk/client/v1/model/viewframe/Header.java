@@ -3,7 +3,7 @@ package com.zendesk.client.v1.model.viewframe;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Header {
+public final class Header {
 
     private final String greeting;
     private final String appName;

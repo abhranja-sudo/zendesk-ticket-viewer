@@ -3,7 +3,7 @@ package com.zendesk.client.v1.model.viewframe;
 import java.util.Objects;
 import java.util.Optional;
 
-public class GetAllTicketFrame extends Frame {
+public final class GetAllTicketFrame extends Frame {
     private final Header header;
     private final TicketListViewer ticketListViewer;
     private final Footer footer;

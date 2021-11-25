@@ -4,7 +4,7 @@ import com.zendesk.client.v1.model.ticket.Ticket;
 
 import java.util.List;
 
-public class TicketListViewer {
+public final class TicketListViewer {
 
     private List<Ticket> ticketList;
 
