@@ -5,7 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zendesk.client.v1.Input;
 import com.zendesk.client.v1.TicketRetriever;
 import com.zendesk.client.v1.controller.Controller;
-import com.zendesk.client.v1.model.getallticketresponse.Response;
+import com.zendesk.client.v1.model.getallticketresponse.GetAllTicketResponse;
 import com.zendesk.client.v1.model.ticket.Ticket;
 import com.zendesk.client.v1.model.viewframe.*;
 import org.apache.http.client.utils.URIBuilder;
@@ -32,11 +32,12 @@ public class MenuService extends Service {
     }
 
     @Override
-    public Frame execute(Input input) {
-        if(input == Input.GET_ALL_TICKETS) {
+    public Frame execute(String input) {
+        Input menuInput = Input.valueOfInput(input);
+        if(menuInput == Input.GET_ALL_TICKETS) {
             try {
-                String body = ticketRetriever.retrieve(buildURI());
-                Response response = objectMapper.readValue(body, Response.class);
+                String body = ticketRetriever.retrieve(buildGetAllTicketURI());
+                GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
                 if(response.getMetaData().isHasMore()) {
                     String nextPageUrl = response.getLinks().getNext();
                     controller.changeServiceState(new GetAllTicketService(controller, nextPageUrl));
@@ -47,44 +48,58 @@ public class MenuService extends Service {
             }
         }
 
-        return  buildMenuFramewithError();
+        if(menuInput == Input.GET_TICKET) {
+            controller.changeServiceState(new GetTicketService(controller));
+            return MenuFrame.builder()
+                    .header(Header.builder()
+                            .appName(APP_NAME_VIEW)
+                            .build())
+                    .footer(Footer.builder()
+                            .customMessage(ENTER_TICKET_ID)
+                            .menu(MENU_VIEW)
+                            .quit(QUIT_VIEW)
+                            .build())
+                    .build();
+        }
+
+        return  buildMenuFrameWithError();
 
     }
 
-    private MenuFrame buildMenuFramewithError() {
+    private MenuFrame buildMenuFrameWithError() {
         return MenuFrame.builder()
                 .header(Header.builder()
-                        .greeting(GREETING)
-                        .appName(APPNAME)
+                        .appName(APP_NAME_VIEW)
                         .build())
                 .footer(Footer.builder()
-                        .errorMessage("Invalid Input, Please try Again\n")
-                        .allTickets(GETALLTICKET)
-                        .quit(QUIT)
+                        .customMessage(INVALID_INPUT)
+                        .getAllTickets(GET_ALL_TICKET_VIEW)
+                        .getTicket(GET_TICKET_VIEW)
+                        .quit(QUIT_VIEW)
                         .build())
                 .build();
     }
 
-    private AllTicketFrame buildTicketFrame(List<Ticket> ticketList) {
+    private GetAllTicketFrame buildTicketFrame(List<Ticket> ticketList) {
 
         Header header = Header.builder()
-                .appName(APPNAME)
+                .appName(APP_NAME_VIEW)
                 .build();
 
         Footer footer = Footer.builder()
-                .menu(MENU)
-                .quit(QUIT)
-                .getNext(GET_NEXT)
+                .menu(MENU_VIEW)
+                .quit(QUIT_VIEW)
+                .getNext(GET_NEXT_VIEW)
                 .build();
 
-        return AllTicketFrame.builder()
+        return GetAllTicketFrame.builder()
                 .header(header)
                 .footer(footer)
-                .ticketList(new TicketList(ticketList))
+                .ticketList(new TicketListViewer(ticketList))
                 .build();
     }
 
-    private URI buildURI() throws URISyntaxException {
+    private URI buildGetAllTicketURI() throws URISyntaxException {
 
         return new URIBuilder(BASE_URL + API_VERSION + GET_ALL_TICKETS )
                 .addParameter("page[size]", Integer.toString(TICKET_PER_PAGE))

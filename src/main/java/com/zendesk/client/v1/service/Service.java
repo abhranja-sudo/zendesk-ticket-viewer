@@ -12,5 +12,5 @@ public abstract class Service {
         this.controller = controller;
     }
 
-    public abstract Frame execute(Input input);
+    public abstract Frame execute(String input);
 }
