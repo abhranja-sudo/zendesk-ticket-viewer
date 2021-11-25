@@ -5,12 +5,13 @@ import java.util.Map;
 
 public enum Input {
     GET_ALL_TICKETS("1"),
+    GET_TICKET("2"),
     NEXT("n"),
     MENU("m"),
     QUIT("q");
 
 
-    public final String input;
+    private final String input;
 
     public String getInput() {
         return input;
