@@ -31,8 +31,8 @@ public class GetAllTicketService extends Service{
 
     @Override
     public Frame execute(String input) {
-        Input input1 = Input.valueOfInput(input);
-        if(input1 == Input.NEXT) {
+        Input menuInput = Input.valueOfInput(input);
+        if(menuInput == Input.NEXT) {
             try {
                 String body = ticketRetriever.retrieve(URI.create(url));
                 GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
@@ -48,9 +48,8 @@ public class GetAllTicketService extends Service{
             }
         }
 
-        else if(input1 == Input.MENU) {
-            controller.changeServiceState(
-                    new MenuService(controller));
+        else if(menuInput == Input.MENU) {
+            controller.changeServiceState(new MenuService(controller));
             return buildMenuFrame();
         }
 
