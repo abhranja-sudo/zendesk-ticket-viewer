@@ -21,7 +21,7 @@ public class Ticket {
     Priority priority;
 
     @JsonProperty("updated_at")
-    ZonedDateTime dateTime;
+    ZonedDateTime updatedAt;
 
     public int getId() {
         return id;
@@ -39,8 +39,8 @@ public class Ticket {
         return priority;
     }
 
-    public ZonedDateTime getDateTime() {
-        return dateTime;
+    public ZonedDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Ticket {
                 ", subject='" + subject + '\'' +
                 ", status=" + status +
                 ", priority=" + priority +
-                ", dateTime=" + dateTime +
+                ", dateTime=" + updatedAt +
                 '}';
     }
 }
