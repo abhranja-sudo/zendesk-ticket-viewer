@@ -3,65 +3,66 @@ package com.zendesk.client.v1.model.viewframe;
 import java.util.Objects;
 import java.util.Optional;
 
-public class AllTicketFrame extends Frame {
+public class GetTicketFrame extends Frame{
+
     private final Header header;
-    private final TicketList ticketList;
+    private final TicketViewer ticketViewer;
     private final Footer footer;
 
-    private AllTicketFrame(Header header, TicketList ticketList, Footer footer) {
+    private GetTicketFrame(Header header, TicketViewer ticketViewer, Footer footer) {
         this.header = header;
-        this.ticketList = ticketList;
+        this.ticketViewer = ticketViewer;
         this.footer = footer;
     }
 
-    public static AllTicketFrame.Builder builder() {
-        return new AllTicketFrame.Builder();
+    public static GetTicketFrame.Builder builder() {
+        return new GetTicketFrame.Builder();
     }
 
 
     public static final class Builder {
         private Header header;
-        private TicketList ticketList;
+        private TicketViewer ticketViewer;
         private Footer footer;
 
         private Builder() {
         }
 
-        public final AllTicketFrame.Builder header(Header header) {
+        public final GetTicketFrame.Builder header(Header header) {
             this.header = Objects.requireNonNull(header, "header");
             return this;
         }
 
-        public final AllTicketFrame.Builder header(Optional<Header> header) {
+        public final GetTicketFrame.Builder header(Optional<Header> header) {
             this.header = header.orElse(null);
             return this;
         }
 
 
-        public final AllTicketFrame.Builder ticketList(TicketList ticketList) {
-            this.ticketList = Objects.requireNonNull(ticketList, "ticketListViewer");
+        public final GetTicketFrame.Builder ticket(TicketViewer ticket) {
+            this.ticketViewer = Objects.requireNonNull(ticket, "ticketViewer");
             return this;
         }
 
 
-        public final AllTicketFrame.Builder ticketList(Optional<TicketList> ticketList) {
-            this.ticketList = ticketList.orElse(null);
+        public final GetTicketFrame.Builder ticket(Optional<TicketViewer> ticket) {
+            this.ticketViewer = ticket.orElse(null);
             return this;
         }
 
-        public final AllTicketFrame.Builder footer(Footer footer) {
+        public final GetTicketFrame.Builder footer(Footer footer) {
             this.footer = Objects.requireNonNull(footer, "footer");
             return this;
         }
 
 
-        public final AllTicketFrame.Builder footer(Optional<Footer> footer) {
+        public final GetTicketFrame.Builder footer(Optional<Footer> footer) {
             this.footer = footer.orElse(null);
             return this;
         }
 
-        public AllTicketFrame build() {
-            return new AllTicketFrame(header, ticketList, footer);
+        public GetTicketFrame build() {
+            return new GetTicketFrame(header, ticketViewer, footer);
         }
     }
 
@@ -71,13 +72,12 @@ public class AllTicketFrame extends Frame {
         if (header != null) {
             builder.append(header + "\n");
         }
-        if (ticketList != null) {
-            builder.append(ticketList + "\n");
+        if (ticketViewer != null) {
+            builder.append(ticketViewer + "\n");
         }
         if (footer != null) {
             builder.append(footer + "\n");
         }
         return builder.toString();
     }
-
 }
