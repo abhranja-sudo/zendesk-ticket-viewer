@@ -19,6 +19,7 @@ public class Controller {
     private final Viewer viewer;
     private Frame frame;
     private Service service;
+    private static final String QUIT = Input.QUIT.getInput();
 
 
     public Controller() {
@@ -33,8 +34,9 @@ public class Controller {
 
     public void run() throws URISyntaxException, IOException, InterruptedException {
         viewer.display(frame);
-        Input input;
-        while ((input = Input.valueOfInput(viewer.prompt("\nTicketViewer> "))) != Input.QUIT) {
+
+        String input;
+        while (!QUIT.equals(input = viewer.prompt("\nEnter your Input here: > ").toLowerCase().trim())) {
             Frame updatedFrame = service.execute(input);
             viewer.display(updatedFrame);
         }
@@ -43,12 +45,13 @@ public class Controller {
     private MenuFrame buildMenuFrame() {
         return MenuFrame.builder()
                 .header(Header.builder()
-                        .greeting(GREETING)
-                        .appName(APPNAME)
+                        .greeting(GREETING_VIEW)
+                        .appName(APP_NAME_VIEW)
                         .build())
                 .footer(Footer.builder()
-                        .allTickets(GETALLTICKET)
-                        .quit(QUIT)
+                        .getAllTickets(GET_ALL_TICKET_VIEW)
+                        .getTicket(GET_TICKET_VIEW)
+                        .quit(QUIT_VIEW)
                         .build())
                 .build();
     }
