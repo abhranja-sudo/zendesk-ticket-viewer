@@ -63,7 +63,7 @@ public class GetAllTicketService extends Service{
                         .appName(APP_NAME_VIEW)
                         .build())
                 .footer(Footer.builder()
-                        .customMessage("Invalid Input. Please try again ")
+                        .customMessage(INVALID_INPUT)
                         .getAllTickets(GET_NEXT_VIEW)
                         .menu(MENU_VIEW)
                         .quit(QUIT_VIEW)
@@ -111,7 +111,7 @@ public class GetAllTicketService extends Service{
                 .build();
 
         Footer footer = Footer.builder()
-                .customMessage("End of Page. Select Menu options below to continue")
+                .customMessage(END_OF_PAGE)
                 .getAllTickets(GET_ALL_TICKET_VIEW)
                 .getTicket(GET_TICKET_VIEW)
                 .quit(QUIT_VIEW)
