@@ -5,7 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zendesk.client.v1.Input;
 import com.zendesk.client.v1.TicketRetriever;
 import com.zendesk.client.v1.controller.Controller;
-import com.zendesk.client.v1.model.getallticketresponse.Response;
+import com.zendesk.client.v1.model.getallticketresponse.*;
 import com.zendesk.client.v1.model.ticket.Ticket;
 import com.zendesk.client.v1.model.viewframe.*;
 
@@ -30,14 +30,15 @@ public class GetAllTicketService extends Service{
     }
 
     @Override
-    public Frame execute(Input input) {
-        if(input == Input.NEXT) {
+    public Frame execute(String input) {
+        Input input1 = Input.valueOfInput(input);
+        if(input1 == Input.NEXT) {
             try {
                 String body = ticketRetriever.retrieve(URI.create(url));
-                Response response = objectMapper.readValue(body, Response.class);
+                GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
                 if(!response.getMetaData().isHasMore()) {
-                    controller.changeServiceState(
-                            new MenuService(controller));
+                    controller.changeServiceState(new MenuService(controller));
+                    return buildAllTicketFrameForEndPage(response.getTicketList());
                 }
                 url = response.getLinks().getNext();
                 return buildAllTicketFrame(response.getTicketList());
@@ -47,7 +48,7 @@ public class GetAllTicketService extends Service{
             }
         }
 
-        else if(input == Input.MENU) {
+        else if(input1 == Input.MENU) {
             controller.changeServiceState(
                     new MenuService(controller));
             return buildMenuFrame();
@@ -59,13 +60,13 @@ public class GetAllTicketService extends Service{
     private MenuFrame buildMenuFrameWithError() {
         return MenuFrame.builder()
                 .header(Header.builder()
-                        .appName(APPNAME)
+                        .appName(APP_NAME_VIEW)
                         .build())
                 .footer(Footer.builder()
-                        .errorMessage("Invalid Input. Please try again ")
-                        .allTickets(GET_NEXT)
-                        .menu(MENU)
-                        .quit(QUIT)
+                        .customMessage("Invalid Input. Please try again ")
+                        .getAllTickets(GET_NEXT_VIEW)
+                        .menu(MENU_VIEW)
+                        .quit(QUIT_VIEW)
                         .build())
                 .build();
     }
@@ -73,32 +74,53 @@ public class GetAllTicketService extends Service{
     private MenuFrame buildMenuFrame() {
         return MenuFrame.builder()
                 .header(Header.builder()
-                        .greeting(GREETING)
-                        .appName(APPNAME)
+                        .greeting(GREETING_VIEW)
+                        .appName(APP_NAME_VIEW)
                         .build())
                 .footer(Footer.builder()
-                        .allTickets(GETALLTICKET)
-                        .quit(QUIT)
+                        .getAllTickets(GET_ALL_TICKET_VIEW)
+                        .getTicket(GET_TICKET_VIEW)
+                        .quit(QUIT_VIEW)
                         .build())
                 .build();
     }
 
-    private AllTicketFrame buildAllTicketFrame(List<Ticket> ticketList) {
+    private GetAllTicketFrame buildAllTicketFrame(List<Ticket> ticketList) {
 
         Header header = Header.builder()
-                .appName(APPNAME)
+                .appName(APP_NAME_VIEW)
                 .build();
 
         Footer footer = Footer.builder()
-                .menu(MENU)
-                .quit(QUIT)
-                .getNext(GET_NEXT)
+                .menu(MENU_VIEW)
+                .quit(QUIT_VIEW)
+                .getNext(GET_NEXT_VIEW)
                 .build();
 
-        return AllTicketFrame.builder()
+        return GetAllTicketFrame.builder()
                 .header(header)
                 .footer(footer)
-                .ticketList(new TicketList(ticketList))
+                .ticketList(new TicketListViewer(ticketList))
+                .build();
+    }
+
+    private GetAllTicketFrame buildAllTicketFrameForEndPage(List<Ticket> ticketList) {
+
+        Header header = Header.builder()
+                .appName(APP_NAME_VIEW)
+                .build();
+
+        Footer footer = Footer.builder()
+                .customMessage("End of Page. Select Menu options below to continue")
+                .getAllTickets(GET_ALL_TICKET_VIEW)
+                .getTicket(GET_TICKET_VIEW)
+                .quit(QUIT_VIEW)
+                .build();
+
+        return GetAllTicketFrame.builder()
+                .header(header)
+                .footer(footer)
+                .ticketList(new TicketListViewer(ticketList))
                 .build();
     }
 }

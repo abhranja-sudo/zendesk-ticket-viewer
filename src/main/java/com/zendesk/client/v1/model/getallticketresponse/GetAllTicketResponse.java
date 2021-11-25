@@ -7,7 +7,7 @@ import com.zendesk.client.v1.model.ticket.Ticket;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Response {
+public class GetAllTicketResponse {
 
     @JsonProperty("tickets")
     List<Ticket> ticketList;

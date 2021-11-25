@@ -4,11 +4,11 @@ import com.zendesk.client.v1.model.ticket.Ticket;
 
 import java.util.List;
 
-public class TicketList {
+public class TicketListViewer {
 
     private List<Ticket> ticketList;
 
-    public TicketList(List<Ticket> ticketList) {
+    public TicketListViewer(List<Ticket> ticketList) {
         this.ticketList = ticketList;
     }
 
@@ -21,7 +21,7 @@ public class TicketList {
 
         for (Ticket ticket: ticketList) {
             builder.append(String.format("%5s %60s %15s %15s %35s", ticket.getId(), ticket.getSubject(), ticket.getStatus(),
-                    ticket.getPriority(), ticket.getDateTime() ));
+                    ticket.getPriority(), ticket.getUpdatedAt() ));
             builder.append("\n");
 
         }
