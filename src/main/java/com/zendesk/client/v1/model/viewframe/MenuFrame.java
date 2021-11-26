@@ -3,7 +3,7 @@ package com.zendesk.client.v1.model.viewframe;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class MenuFrame extends Frame{
+public final class MenuFrame extends Frame {
 
     private final Header header;
     private final Footer footer;

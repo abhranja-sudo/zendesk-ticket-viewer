@@ -32,7 +32,7 @@ public class Controller {
         this.service = service;
     }
 
-    public void run() throws URISyntaxException, IOException, InterruptedException {
+    public void run() {
         viewer.display(frame);
 
         String input;

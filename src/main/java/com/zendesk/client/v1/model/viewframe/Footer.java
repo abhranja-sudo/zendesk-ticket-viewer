@@ -122,16 +122,16 @@ public final class Footer {
             builder.append(getNext + " \n");
         }
 
-        if (menu != null) {
-            builder.append(menu +" \n");
-        }
-
         if (getAllTickets != null) {
             builder.append(getAllTickets +" \n");
         }
 
         if(getTicket != null) {
             builder.append(getTicket +" \n");
+        }
+
+        if (menu != null) {
+            builder.append(menu +" \n");
         }
 
         if (quit != null) {

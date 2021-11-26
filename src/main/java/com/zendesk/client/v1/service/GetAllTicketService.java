@@ -1,5 +1,6 @@
 package com.zendesk.client.v1.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zendesk.client.v1.Input;
@@ -8,22 +9,25 @@ import com.zendesk.client.v1.controller.Controller;
 import com.zendesk.client.v1.model.getallticketresponse.*;
 import com.zendesk.client.v1.model.ticket.Ticket;
 import com.zendesk.client.v1.model.viewframe.*;
+import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
+import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 
-public class GetAllTicketService extends Service{
+public class GetAllTicketService extends Service {
 
     private String url;
     private final TicketRetriever ticketRetriever;
     private final ObjectMapper objectMapper;
+    private static final int TICKET_PER_PAGE = 25;
 
-    public GetAllTicketService(Controller controller, String url) {
+    public GetAllTicketService(Controller controller) {
         super(controller);
-        this.url = url;
         ticketRetriever = new TicketRetriever();
         objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule());
@@ -31,21 +35,30 @@ public class GetAllTicketService extends Service{
 
     @Override
     public Frame execute(String input) {
+
         Input menuInput = Input.valueOfInput(input);
+
+        if(menuInput == Input.GET_ALL_TICKETS) {
+            String body = null;
+            try {
+                body = ticketRetriever.retrieve(buildGetAllTicketURI());
+                return processBody(body);
+
+            } catch (IOException | InterruptedException | URISyntaxException e) {
+                return processFatalException();
+            }
+        }
+
+
         if(menuInput == Input.NEXT) {
             try {
                 String body = ticketRetriever.retrieve(URI.create(url));
-                GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
-                if(!response.getMetaData().isHasMore()) {
-                    controller.changeServiceState(new MenuService(controller));
-                    return buildAllTicketFrameForEndPage(response.getTicketList());
-                }
-                url = response.getLinks().getNext();
-                return buildAllTicketFrame(response.getTicketList());
+                return processBody(body);
 
             } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+                return processFatalException();
             }
+
         }
 
         else if(menuInput == Input.MENU) {
@@ -53,7 +66,34 @@ public class GetAllTicketService extends Service{
             return buildMenuFrame();
         }
 
+        //For any other Input
         return buildMenuFrameWithError();
+    }
+
+    private Frame processFatalException() {
+        controller.changeServiceState(new MenuService(controller));
+        return MenuFrame.builder()
+                .header(Header.builder()
+                        .appName(APP_NAME_VIEW)
+                        .build())
+                .footer(Footer.builder()
+                        .customMessage(FATAL_PROGRAM_ERROR)
+                        .getAllTickets(GET_NEXT_VIEW)
+                        .getTicket(GET_TICKET_VIEW)
+                        .quit(QUIT_VIEW)
+                        .build())
+                .build();
+    }
+
+    private Frame processBody(String body) throws JsonProcessingException {
+
+        GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
+        if(!response.getMetaData().isHasMore()) {
+            controller.changeServiceState(new MenuService(controller));
+            return buildAllTicketFrameForEndPage(response.getTicketList());
+        }
+        url = response.getLinks().getNext();
+        return buildAllTicketFrame(response.getTicketList());
     }
 
     private MenuFrame buildMenuFrameWithError() {
@@ -63,7 +103,8 @@ public class GetAllTicketService extends Service{
                         .build())
                 .footer(Footer.builder()
                         .customMessage(INVALID_INPUT)
-                        .getAllTickets(GET_NEXT_VIEW)
+                        .getNext(GET_NEXT_VIEW)
+                        .getAllTickets(START_PAGING_AGAIN)
                         .menu(MENU_VIEW)
                         .quit(QUIT_VIEW)
                         .build())
@@ -91,6 +132,7 @@ public class GetAllTicketService extends Service{
                 .build();
 
         Footer footer = Footer.builder()
+                .getAllTickets(START_PAGING_AGAIN)
                 .menu(MENU_VIEW)
                 .quit(QUIT_VIEW)
                 .getNext(GET_NEXT_VIEW)
@@ -122,4 +164,12 @@ public class GetAllTicketService extends Service{
                 .ticketList(new TicketListViewer(ticketList))
                 .build();
     }
+
+    private URI buildGetAllTicketURI() throws URISyntaxException {
+
+        return new URIBuilder(BASE_URL + API_VERSION + GET_ALL_TICKETS )
+                .addParameter("page[size]", Integer.toString(TICKET_PER_PAGE))
+                .build();
+    }
+
 }
