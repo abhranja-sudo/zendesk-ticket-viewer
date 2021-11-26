@@ -1,9 +1,6 @@
 package com.zendesk.client.v1.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zendesk.client.v1.Input;
-import com.zendesk.client.v1.TicketRetriever;
 import com.zendesk.client.v1.controller.Controller;
 import com.zendesk.client.v1.model.viewframe.*;
 
@@ -12,10 +9,10 @@ import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 public class MenuService extends Service {
 
     private GetAllTicketService getAllTicketService;
+    private GetTicketService getTicketService;
 
     public MenuService(Controller controller) {
         super(controller);
-
     }
 
     @Override
@@ -25,14 +22,15 @@ public class MenuService extends Service {
 
         if(menuInput == Input.GET_ALL_TICKETS) {
 
-            GetAllTicketService getAllTicketService = new GetAllTicketService(controller);
+            getAllTicketService = new GetAllTicketService(controller);
             controller.changeServiceState(getAllTicketService);
             return getAllTicketService.execute(input);
 
         }
 
         if(menuInput == Input.GET_TICKET) {
-            controller.changeServiceState(new GetTicketService(controller));
+            getTicketService = new GetTicketService(controller);
+            controller.changeServiceState(getTicketService);
             return MenuFrame.builder()
                     .header(Header.builder()
                             .appName(APP_NAME_VIEW)
