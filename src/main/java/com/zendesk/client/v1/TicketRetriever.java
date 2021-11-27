@@ -42,7 +42,7 @@ public class TicketRetriever {
                 .GET()
                 .build();
 
-        HttpResponse<String> response = HttpClient.newHttpClient()
+        HttpResponse<String> response = HttpClientFactory.getInstance()
                 .send(request, HttpResponse.BodyHandlers.ofString());
 
         if(isStatus2xx(response))
