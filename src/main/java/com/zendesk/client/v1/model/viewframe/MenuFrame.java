@@ -3,6 +3,8 @@ package com.zendesk.client.v1.model.viewframe;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
+
 public final class MenuFrame extends Frame {
 
     private final Header header;
@@ -17,6 +19,19 @@ public final class MenuFrame extends Frame {
         return new MenuFrame.Builder();
     }
 
+    public static MenuFrame getFrameForHome() {
+        return MenuFrame.builder()
+                .header(Header.builder()
+                        .greeting(GREETING_VIEW)
+                        .appName(APP_NAME_VIEW)
+                        .build())
+                .footer(Footer.builder()
+                        .getAllTickets(GET_ALL_TICKET_VIEW)
+                        .getTicket(GET_TICKET_VIEW)
+                        .quit(QUIT_VIEW)
+                        .build())
+                .build();
+    }
 
     public static final class Builder {
         private Header header;

@@ -45,7 +45,7 @@ public class GetTicketService extends Service {
         else if(Input.getInput(input) == Input.MENU) {
             controller.changeServiceState(new MenuService(controller,
                     new GetAllTicketService(controller, ticketRetriever, objectMapper), this));
-            return buildMenuFrame();
+            return MenuFrame.getFrameForHome();
         }
 
         try {
@@ -111,19 +111,4 @@ public class GetTicketService extends Service {
                         .build())
                 .build();
     }
-
-    private MenuFrame buildMenuFrame() {
-        return MenuFrame.builder()
-                .header(Header.builder()
-                        .greeting(GREETING_VIEW)
-                        .appName(APP_NAME_VIEW)
-                        .build())
-                .footer(Footer.builder()
-                        .getAllTickets(GET_ALL_TICKET_VIEW)
-                        .getTicket(GET_TICKET_VIEW)
-                        .quit(QUIT_VIEW)
-                        .build())
-                .build();
-    }
-
 }

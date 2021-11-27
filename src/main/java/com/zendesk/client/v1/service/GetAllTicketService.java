@@ -63,7 +63,7 @@ public class GetAllTicketService extends Service {
 
         else if(menuInput == Input.MENU) {
             changeStateToMenuService();
-            return buildMenuFrame();
+            return MenuFrame.getFrameForHome();
         }
 
         //For any other Invalid Input
@@ -111,20 +111,6 @@ public class GetAllTicketService extends Service {
                         .getNext(GET_NEXT_VIEW)
                         .getAllTickets(START_PAGING_AGAIN)
                         .menu(MENU_VIEW)
-                        .quit(QUIT_VIEW)
-                        .build())
-                .build();
-    }
-
-    private MenuFrame buildMenuFrame() {
-        return MenuFrame.builder()
-                .header(Header.builder()
-                        .greeting(GREETING_VIEW)
-                        .appName(APP_NAME_VIEW)
-                        .build())
-                .footer(Footer.builder()
-                        .getAllTickets(GET_ALL_TICKET_VIEW)
-                        .getTicket(GET_TICKET_VIEW)
                         .quit(QUIT_VIEW)
                         .build())
                 .build();
