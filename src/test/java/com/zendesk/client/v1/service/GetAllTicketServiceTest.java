@@ -10,6 +10,7 @@ import com.zendesk.client.v1.model.getallticketresponse.GetAllTicketResponse;
 import com.zendesk.client.v1.model.ticket.Ticket;
 import com.zendesk.client.v1.model.viewframe.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,6 @@ import java.util.List;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,6 +41,7 @@ class GetAllTicketServiceTest {
         objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         controller = new Controller();
         getAllTicketService = new GetAllTicketService(controller, ticketRetriever, objectMapper);
+        controller.changeServiceState(getAllTicketService);
     }
 
     /**
@@ -70,6 +71,9 @@ class GetAllTicketServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(expectedFrame);
 
+        // State shouldn't change
+        Assertions.assertEquals(controller.getService().getClass(), GetAllTicketService.class);
+
 
         String UriNextPage = "https://zccar.zendesk.com/api/v2/tickets.json?page%5Bafter%5D=eyJvIjoibmlj" +
                 "ZV9pZCIsInYiOiJhUmtBQUFBQUFBQUEifQ%3D%3D&page%5Bsize%5D=25";
@@ -85,6 +89,9 @@ class GetAllTicketServiceTest {
         assertThat(actualFrame)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedFrame);
+
+        // State shouldn't change
+        Assertions.assertEquals(controller.getService().getClass(), GetAllTicketService.class);
     }
 
     @Test
@@ -110,6 +117,9 @@ class GetAllTicketServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(expectedFrame);
 
+        // State should transition to MenuService after last page
+        Assertions.assertEquals(controller.getService().getClass(), MenuService.class);
+
     }
 
     @Test
@@ -123,6 +133,9 @@ class GetAllTicketServiceTest {
         assertThat(actualFrame)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedFrame);
+
+        // State should transition to MenuService after last page
+        Assertions.assertEquals(controller.getService().getClass(), MenuService.class);
     }
 
     @Test
@@ -165,6 +178,9 @@ class GetAllTicketServiceTest {
                     .usingRecursiveComparison()
                     .isEqualTo(expectedFrame);
         }
+
+        // State shouldn't change
+        Assertions.assertEquals(controller.getService().getClass(), GetAllTicketService.class);
     }
 
     private MenuFrame buildMenuFrame() {

@@ -1,7 +1,6 @@
 package com.zendesk.client.v1.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zendesk.client.v1.Input;
 import com.zendesk.client.v1.TicketRetriever;
 import com.zendesk.client.v1.ZendeskResponseException;
