@@ -70,6 +70,33 @@ public class GetAllTicketService extends Service {
         return buildMenuFrameWithError();
     }
 
+    private Frame processBody(String body) throws JsonProcessingException {
+
+        GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
+        if(!response.getMetaData().isHasMore()) {
+            changeStateToMenuService();
+            return buildAllTicketFrameForEndPage(response.getTicketList());
+        }
+        setUrlForFetchingNextPage(response);
+        return buildAllTicketFrame(response.getTicketList());
+    }
+
+    private void setUrlForFetchingNextPage(GetAllTicketResponse response) {
+        url = response.getLinks().getNext();
+    }
+
+    private URI buildGetAllTicketURI() throws URISyntaxException {
+
+        return new URIBuilder(BASE_URL + API_VERSION + GET_ALL_TICKETS )
+                .addParameter("page[size]", Integer.toString(TICKET_PER_PAGE))
+                .build();
+    }
+
+    private void changeStateToMenuService() {
+        controller.changeServiceState(new MenuService(controller, this,
+                new GetTicketService(controller, ticketRetriever, objectMapper)));
+    }
+
     private Frame processFatalException() {
         changeStateToMenuService();
         return MenuFrame.builder()
@@ -85,21 +112,6 @@ public class GetAllTicketService extends Service {
                 .build();
     }
 
-    private Frame processBody(String body) throws JsonProcessingException {
-
-        GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
-        if(!response.getMetaData().isHasMore()) {
-            changeStateToMenuService();
-            return buildAllTicketFrameForEndPage(response.getTicketList());
-        }
-        url = response.getLinks().getNext();
-        return buildAllTicketFrame(response.getTicketList());
-    }
-
-    private void changeStateToMenuService() {
-        controller.changeServiceState(new MenuService(controller, this,
-                new GetTicketService(controller, ticketRetriever, objectMapper)));
-    }
 
     private MenuFrame buildMenuFrameWithError() {
         return MenuFrame.builder()
@@ -156,11 +168,6 @@ public class GetAllTicketService extends Service {
                 .build();
     }
 
-    private URI buildGetAllTicketURI() throws URISyntaxException {
 
-        return new URIBuilder(BASE_URL + API_VERSION + GET_ALL_TICKETS )
-                .addParameter("page[size]", Integer.toString(TICKET_PER_PAGE))
-                .build();
-    }
 
 }
