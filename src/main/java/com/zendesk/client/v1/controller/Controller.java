@@ -5,12 +5,11 @@ import com.zendesk.client.v1.model.viewframe.Footer;
 import com.zendesk.client.v1.model.viewframe.Frame;
 import com.zendesk.client.v1.model.viewframe.Header;
 import com.zendesk.client.v1.model.viewframe.MenuFrame;
+import com.zendesk.client.v1.service.GetAllTicketService;
+import com.zendesk.client.v1.service.GetTicketService;
 import com.zendesk.client.v1.service.MenuService;
 import com.zendesk.client.v1.service.Service;
 import com.zendesk.client.v1.view.Viewer;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 
@@ -19,13 +18,17 @@ public class Controller {
     private final Viewer viewer;
     private Frame frame;
     private Service service;
-    private static final String QUIT = Input.QUIT.getInput();
+    private static final String QUIT = Input.QUIT.getValue();
 
 
     public Controller() {
         this.viewer = new Viewer();
         this.frame = buildMenuFrame();
-        this.service = new MenuService(this);
+        this.service = new MenuService(this, new GetAllTicketService(this), new GetTicketService(this));
+    }
+
+    public Service getService() {
+        return service;
     }
 
     public void changeServiceState(Service service) {

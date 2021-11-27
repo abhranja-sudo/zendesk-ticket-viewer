@@ -42,8 +42,9 @@ public class GetTicketService extends Service {
             return buildMenuFrameWithError(NO_INPUT);
         }
 
-        else if(Input.valueOfInput(input) == Input.MENU) {
-            controller.changeServiceState(new MenuService(controller));
+        else if(Input.getInput(input) == Input.MENU) {
+            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller),
+                    new GetTicketService(controller)));
             return buildMenuFrame();
         }
 

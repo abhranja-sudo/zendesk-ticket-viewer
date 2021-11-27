@@ -36,10 +36,10 @@ public class GetAllTicketService extends Service {
     @Override
     public Frame execute(String input) {
 
-        Input menuInput = Input.valueOfInput(input);
+        Input menuInput = Input.getInput(input);
 
         if(menuInput == Input.GET_ALL_TICKETS) {
-            String body = null;
+            String body;
             try {
                 body = ticketRetriever.retrieve(buildGetAllTicketURI());
                 return processBody(body);
@@ -62,7 +62,8 @@ public class GetAllTicketService extends Service {
         }
 
         else if(menuInput == Input.MENU) {
-            controller.changeServiceState(new MenuService(controller));
+            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller),
+                    new GetTicketService(controller)));
             return buildMenuFrame();
         }
 
@@ -71,7 +72,8 @@ public class GetAllTicketService extends Service {
     }
 
     private Frame processFatalException() {
-        controller.changeServiceState(new MenuService(controller));
+        controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller),
+                new GetTicketService(controller)));
         return MenuFrame.builder()
                 .header(Header.builder()
                         .appName(APP_NAME_VIEW)
@@ -89,7 +91,8 @@ public class GetAllTicketService extends Service {
 
         GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
         if(!response.getMetaData().isHasMore()) {
-            controller.changeServiceState(new MenuService(controller));
+            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller),
+                    new GetTicketService(controller)));
             return buildAllTicketFrameForEndPage(response.getTicketList());
         }
         url = response.getLinks().getNext();

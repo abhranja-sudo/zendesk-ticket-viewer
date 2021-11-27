@@ -11,18 +11,21 @@ public class MenuService extends Service {
     private GetAllTicketService getAllTicketService;
     private GetTicketService getTicketService;
 
-    public MenuService(Controller controller) {
+    //Dependency Injection through constructor (instead of creating objects here) for easily testable code
+    public MenuService(Controller controller, GetAllTicketService getAllTicketService,
+                       GetTicketService getTicketService) {
         super(controller);
+        this.getAllTicketService = getAllTicketService;
+        this.getTicketService = getTicketService;
     }
 
     @Override
     public Frame execute(String input) {
 
-        Input menuInput = Input.valueOfInput(input);
+        Input menuInput = Input.getInput(input);
 
         if(menuInput == Input.GET_ALL_TICKETS) {
 
-            getAllTicketService = new GetAllTicketService(controller);
             controller.changeServiceState(getAllTicketService);
             return getAllTicketService.execute(input);
 
