@@ -1,6 +1,9 @@
 package com.zendesk.client.v1.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zendesk.client.v1.Input;
+import com.zendesk.client.v1.TicketRetriever;
 import com.zendesk.client.v1.model.viewframe.Footer;
 import com.zendesk.client.v1.model.viewframe.Frame;
 import com.zendesk.client.v1.model.viewframe.Header;
@@ -19,12 +22,15 @@ public class Controller {
     private Frame frame;
     private Service service;
     private static final String QUIT = Input.QUIT.getValue();
+    private TicketRetriever ticketRetriever = new TicketRetriever();
+    private ObjectMapper objectMapper =  new ObjectMapper().registerModule(new JavaTimeModule());
 
 
     public Controller() {
         this.viewer = new Viewer();
         this.frame = buildMenuFrame();
-        this.service = new MenuService(this, new GetAllTicketService(this), new GetTicketService(this));
+        this.service = new MenuService(this, new GetAllTicketService(this, ticketRetriever, objectMapper),
+                new GetTicketService(this, ticketRetriever, objectMapper));
     }
 
     public Service getService() {

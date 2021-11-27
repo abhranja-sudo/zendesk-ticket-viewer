@@ -32,7 +32,6 @@ public class MenuService extends Service {
         }
 
         if(menuInput == Input.GET_TICKET) {
-            getTicketService = new GetTicketService(controller);
             controller.changeServiceState(getTicketService);
             return MenuFrame.builder()
                     .header(Header.builder()

@@ -22,10 +22,10 @@ import static org.mockito.Mockito.*;
 
 class MenuServiceTest {
 
-    Controller controller;
-    GetAllTicketService getAllTicketService;
-    GetTicketService getTicketService;
-    MenuService menuService;
+    private Controller controller;
+    private GetAllTicketService getAllTicketService;
+    private GetTicketService getTicketService;
+    private MenuService menuService;
 
 
     @BeforeEach

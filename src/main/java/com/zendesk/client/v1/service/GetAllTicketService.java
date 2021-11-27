@@ -2,7 +2,6 @@ package com.zendesk.client.v1.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zendesk.client.v1.Input;
 import com.zendesk.client.v1.TicketRetriever;
 import com.zendesk.client.v1.controller.Controller;
@@ -26,11 +25,11 @@ public class GetAllTicketService extends Service {
     private final ObjectMapper objectMapper;
     private static final int TICKET_PER_PAGE = 25;
 
-    public GetAllTicketService(Controller controller) {
+    //Dependency Injection through constructor (instead of creating objects inside) for easily testable code (TDD)
+    public GetAllTicketService(Controller controller, TicketRetriever ticketRetriever, ObjectMapper objectMapper) {
         super(controller);
-        ticketRetriever = new TicketRetriever();
-        objectMapper = new ObjectMapper()
-                .registerModule(new JavaTimeModule());
+        this.ticketRetriever = ticketRetriever;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -62,18 +61,19 @@ public class GetAllTicketService extends Service {
         }
 
         else if(menuInput == Input.MENU) {
-            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller),
-                    new GetTicketService(controller)));
+            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller,
+                    ticketRetriever, objectMapper),
+                    new GetTicketService(controller, ticketRetriever, objectMapper)));
             return buildMenuFrame();
         }
 
-        //For any other Input
+        //For any other Invalid Input
         return buildMenuFrameWithError();
     }
 
     private Frame processFatalException() {
-        controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller),
-                new GetTicketService(controller)));
+        controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller, ticketRetriever, objectMapper),
+                new GetTicketService(controller, ticketRetriever, objectMapper)));
         return MenuFrame.builder()
                 .header(Header.builder()
                         .appName(APP_NAME_VIEW)
@@ -91,8 +91,8 @@ public class GetAllTicketService extends Service {
 
         GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
         if(!response.getMetaData().isHasMore()) {
-            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller),
-                    new GetTicketService(controller)));
+            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller, ticketRetriever, objectMapper),
+                    new GetTicketService(controller, ticketRetriever, objectMapper)));
             return buildAllTicketFrameForEndPage(response.getTicketList());
         }
         url = response.getLinks().getNext();
