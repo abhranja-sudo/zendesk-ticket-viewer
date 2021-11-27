@@ -47,12 +47,12 @@ class GetAllTicketServiceTest {
      *  Simulate the flow when total count of tickets is more than TICKET_PER_PAGE.
      *  During initialization, the only valid input is "GET_ALL_TICKETS". This initial call sets the uri for next API call.
      *
-     *  After URI is set, calling the function with "NEXT" input.
+     *  After URI is set, testing the service with "NEXT" input.
      */
     @Test
     void whenHavingMoreDataOnNextPage() throws IOException, InterruptedException, URISyntaxException {
 
-        String JsonMockResponse = Files.toString(new File("src/test/java/hasMoreTicketOnNextPage.json"),
+        String JsonMockResponse = Files.toString(new File("src/test/resources/hasMoreTicketOnNextPage.json"),
                 StandardCharsets.UTF_8);
 
         when(ticketRetriever.retrieve(buildGetAllTicketURI()))
@@ -92,7 +92,7 @@ class GetAllTicketServiceTest {
 
         //when total count of tickets is less than TICKET_PER_PAGE
 
-        String JsonMockResponse = Files.toString(new File("src/test/java/noTicketOnNextPage.json"),
+        String JsonMockResponse = Files.toString(new File("src/test/resources/noTicketOnNextPage.json"),
                 StandardCharsets.UTF_8);
 
         when(ticketRetriever.retrieve(buildGetAllTicketURI()))
