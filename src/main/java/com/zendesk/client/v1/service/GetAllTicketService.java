@@ -26,7 +26,8 @@ public class GetAllTicketService extends Service {
     private static final int TICKET_PER_PAGE = 25;
 
     //Dependency Injection through constructor (instead of creating objects inside) for easily testable code (TDD)
-    public GetAllTicketService(Controller controller, TicketRetriever ticketRetriever, ObjectMapper objectMapper) {
+    public GetAllTicketService(Controller controller, TicketRetriever ticketRetriever,
+                               ObjectMapper objectMapper) {
         super(controller);
         this.ticketRetriever = ticketRetriever;
         this.objectMapper = objectMapper;
@@ -61,9 +62,7 @@ public class GetAllTicketService extends Service {
         }
 
         else if(menuInput == Input.MENU) {
-            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller,
-                    ticketRetriever, objectMapper),
-                    new GetTicketService(controller, ticketRetriever, objectMapper)));
+            changeStateToMenuService();
             return buildMenuFrame();
         }
 
@@ -72,8 +71,7 @@ public class GetAllTicketService extends Service {
     }
 
     private Frame processFatalException() {
-        controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller, ticketRetriever, objectMapper),
-                new GetTicketService(controller, ticketRetriever, objectMapper)));
+        changeStateToMenuService();
         return MenuFrame.builder()
                 .header(Header.builder()
                         .appName(APP_NAME_VIEW)
@@ -91,12 +89,16 @@ public class GetAllTicketService extends Service {
 
         GetAllTicketResponse response = objectMapper.readValue(body, GetAllTicketResponse.class);
         if(!response.getMetaData().isHasMore()) {
-            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller, ticketRetriever, objectMapper),
-                    new GetTicketService(controller, ticketRetriever, objectMapper)));
+            changeStateToMenuService();
             return buildAllTicketFrameForEndPage(response.getTicketList());
         }
         url = response.getLinks().getNext();
         return buildAllTicketFrame(response.getTicketList());
+    }
+
+    private void changeStateToMenuService() {
+        controller.changeServiceState(new MenuService(controller, this,
+                new GetTicketService(controller, ticketRetriever, objectMapper)));
     }
 
     private MenuFrame buildMenuFrameWithError() {

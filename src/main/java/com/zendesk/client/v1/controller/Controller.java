@@ -20,25 +20,33 @@ public class Controller {
 
     private final Viewer viewer;
     private Frame frame;
-    private Service service;
+    private Service serviceState;
     private static final String QUIT = Input.QUIT.getValue();
-    private TicketRetriever ticketRetriever = new TicketRetriever();
-    private ObjectMapper objectMapper =  new ObjectMapper().registerModule(new JavaTimeModule());
+    private TicketRetriever ticketRetriever;
+    private ObjectMapper objectMapper;
+    private GetAllTicketService getAllTicketService;
+    private GetTicketService getTicketService;
+    private MenuService menuService;
 
 
     public Controller() {
         this.viewer = new Viewer();
+        this.ticketRetriever = new TicketRetriever();
+        this.objectMapper =  new ObjectMapper().registerModule(new JavaTimeModule());
         this.frame = buildMenuFrame();
-        this.service = new MenuService(this, new GetAllTicketService(this, ticketRetriever, objectMapper),
-                new GetTicketService(this, ticketRetriever, objectMapper));
+        this.getAllTicketService =  new GetAllTicketService(this, ticketRetriever, objectMapper);
+        this.getTicketService =  new GetTicketService(this, ticketRetriever, objectMapper);
+        this.menuService = new MenuService(this, getAllTicketService, getTicketService);
+        this.serviceState = menuService;
+
     }
 
-    public Service getService() {
-        return service;
+    public Service getServiceState() {
+        return serviceState;
     }
 
     public void changeServiceState(Service service) {
-        this.service = service;
+        this.serviceState = service;
     }
 
     public void run() {
@@ -46,7 +54,7 @@ public class Controller {
 
         String input;
         while (!QUIT.equals(input = viewer.prompt("\nEnter your Input here: > ").toLowerCase().trim())) {
-            Frame updatedFrame = service.execute(input);
+            Frame updatedFrame = serviceState.execute(input);
             viewer.display(updatedFrame);
         }
     }

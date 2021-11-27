@@ -72,7 +72,7 @@ class GetAllTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         // State shouldn't change
-        Assertions.assertEquals(controller.getService().getClass(), GetAllTicketService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), GetAllTicketService.class);
 
 
         String UriNextPage = "https://zccar.zendesk.com/api/v2/tickets.json?page%5Bafter%5D=eyJvIjoibmlj" +
@@ -91,7 +91,7 @@ class GetAllTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         // State shouldn't change
-        Assertions.assertEquals(controller.getService().getClass(), GetAllTicketService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), GetAllTicketService.class);
     }
 
     @Test
@@ -118,7 +118,7 @@ class GetAllTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         // State should transition to MenuService after last page
-        Assertions.assertEquals(controller.getService().getClass(), MenuService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), MenuService.class);
 
     }
 
@@ -135,7 +135,7 @@ class GetAllTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         // State should transition to MenuService after last page
-        Assertions.assertEquals(controller.getService().getClass(), MenuService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), MenuService.class);
     }
 
     @Test
@@ -180,7 +180,7 @@ class GetAllTicketServiceTest {
         }
 
         // State shouldn't change
-        Assertions.assertEquals(controller.getService().getClass(), GetAllTicketService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), GetAllTicketService.class);
     }
 
     private MenuFrame buildMenuFrame() {

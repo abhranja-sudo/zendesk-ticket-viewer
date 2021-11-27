@@ -28,7 +28,8 @@ public class GetTicketService extends Service {
     private final ObjectMapper objectMapper;
 
     //Dependency Injection through constructor (instead of creating objects inside) for easily testable code
-    public GetTicketService(Controller controller, TicketRetriever ticketRetriever, ObjectMapper objectMapper) {
+    public GetTicketService(Controller controller, TicketRetriever ticketRetriever,
+                            ObjectMapper objectMapper) {
         super(controller);
         this.ticketRetriever = ticketRetriever;
         this.objectMapper = objectMapper;
@@ -42,8 +43,8 @@ public class GetTicketService extends Service {
         }
 
         else if(Input.getInput(input) == Input.MENU) {
-            controller.changeServiceState(new MenuService(controller, new GetAllTicketService(controller, ticketRetriever, objectMapper),
-                    new GetTicketService(controller, ticketRetriever, objectMapper)));
+            controller.changeServiceState(new MenuService(controller,
+                    new GetAllTicketService(controller, ticketRetriever, objectMapper), this));
             return buildMenuFrame();
         }
 

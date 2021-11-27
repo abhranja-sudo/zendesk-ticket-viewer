@@ -7,7 +7,6 @@ import com.zendesk.client.v1.Input;
 import com.zendesk.client.v1.TicketRetriever;
 import com.zendesk.client.v1.ZendeskResponseException;
 import com.zendesk.client.v1.controller.Controller;
-import com.zendesk.client.v1.model.getallticketresponse.GetAllTicketResponse;
 import com.zendesk.client.v1.model.getticketresponse.GetTicketResponse;
 import com.zendesk.client.v1.model.ticket.Ticket;
 import com.zendesk.client.v1.model.viewframe.*;
@@ -25,8 +24,6 @@ import java.nio.charset.StandardCharsets;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -70,7 +67,7 @@ class GetTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         //State shouldn't change
-        Assertions.assertEquals(controller.getService().getClass(), GetTicketService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), GetTicketService.class);
     }
 
     @Test
@@ -93,7 +90,7 @@ class GetTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         //State shouldn't change
-        Assertions.assertEquals(controller.getService().getClass(), GetTicketService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), GetTicketService.class);
 
     }
 
@@ -117,7 +114,7 @@ class GetTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         //State shouldn't change
-        Assertions.assertEquals(controller.getService().getClass(), GetTicketService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), GetTicketService.class);
     }
 
     @Test
@@ -143,7 +140,7 @@ class GetTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         // State should transition to MenuService
-        Assertions.assertEquals(controller.getService().getClass(), MenuService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), MenuService.class);
     }
 
     @Test
@@ -159,7 +156,7 @@ class GetTicketServiceTest {
                 .isEqualTo(expectedFrame);
 
         //State shouldn't change
-        Assertions.assertEquals(controller.getService().getClass(), GetTicketService.class);
+        Assertions.assertEquals(controller.getServiceState().getClass(), GetTicketService.class);
     }
 
     private GetTicketFrame buildTicketFrame(Ticket ticket) {

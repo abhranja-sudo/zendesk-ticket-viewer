@@ -47,7 +47,7 @@ class MenuServiceTest {
         //  Controller's Service instance should transition to Get All Ticket Service state
         menuService.execute(input);
 
-        Assertions.assertEquals(controller.getService().getClass(), getAllTicketService.getClass());
+        Assertions.assertEquals(controller.getServiceState().getClass(), getAllTicketService.getClass());
 
         //getAllTicketService.execute() should be called
         verify(getAllTicketService, times(1)).execute(input);
@@ -58,10 +58,10 @@ class MenuServiceTest {
         String input = Input.GET_TICKET.getValue();
 
         //  Controller's Service instance should transition from Menu Service state to Get Ticket Service state
-        Assertions.assertEquals(controller.getService().getClass(), menuService.getClass());
+        Assertions.assertEquals(controller.getServiceState().getClass(), menuService.getClass());
         Frame frame = menuService.execute(input);
 
-        Assertions.assertEquals(controller.getService().getClass(), getTicketService.getClass());
+        Assertions.assertEquals(controller.getServiceState().getClass(), getTicketService.getClass());
 
         // should return menu frame asking for input
         Assertions.assertEquals(frame.getClass(), MenuFrame.class);
