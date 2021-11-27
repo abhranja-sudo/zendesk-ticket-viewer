@@ -13,7 +13,7 @@ public enum Input {
 
     private final String input;
 
-    public String getInput() {
+    public String getValue() {
         return input;
     }
 
@@ -29,7 +29,7 @@ public enum Input {
         }
     }
 
-    public static Input valueOfInput(String input) {
-        return INPUT_MAPPER.get(input);
+    public static Input getInput(String inputValue) {
+        return INPUT_MAPPER.get(inputValue);
     }
 }

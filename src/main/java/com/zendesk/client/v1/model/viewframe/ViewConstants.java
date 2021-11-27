@@ -6,18 +6,18 @@ public final class ViewConstants {
 
     public static final String GREETING_VIEW = String.format("%85s ", "*** Welcome ***\n");
     public static final String APP_NAME_VIEW = String.format("%92s ", "*** Zendesk Ticket Viewer ***\n");
-    public static final String MENU_VIEW = String.format("%5s %1s %1s ", "press", Input.MENU.getInput(), "for menu");
+    public static final String MENU_VIEW = String.format("%5s %1s %1s ", "press", Input.MENU.getValue(), "for menu");
 
-    public static final String GET_ALL_TICKET_VIEW = String.format("%5s %1s %1s ", "press", Input.GET_ALL_TICKETS.getInput(),
+    public static final String GET_ALL_TICKET_VIEW = String.format("%5s %1s %1s ", "press", Input.GET_ALL_TICKETS.getValue(),
             "to retrieve all ticket ");
 
-    public static final String GET_TICKET_VIEW = String.format("%5s %1s %1s ", "press", Input.GET_TICKET.getInput(), "to retrieve a ticket");
+    public static final String GET_TICKET_VIEW = String.format("%5s %1s %1s ", "press", Input.GET_TICKET.getValue(), "to retrieve a ticket");
 
-    public static final String QUIT_VIEW = String.format("%5s %1s %1s ", "press", Input.QUIT.getInput(), "to quit");
+    public static final String QUIT_VIEW = String.format("%5s %1s %1s ", "press", Input.QUIT.getValue(), "to quit");
 
-    public static final String GET_NEXT_VIEW = String.format("%5s %1s %1s ", "press", Input.NEXT.getInput(), "for next set of tickets ");
+    public static final String GET_NEXT_VIEW = String.format("%5s %1s %1s ", "press", Input.NEXT.getValue(), "for next set of tickets ");
 
-    public static final String START_PAGING_AGAIN = String.format("%5s %1s %1s ", "press", Input.GET_ALL_TICKETS.getInput(),
+    public static final String START_PAGING_AGAIN = String.format("%5s %1s %1s ", "press", Input.GET_ALL_TICKETS.getValue(),
             "to start viewing tickets again from beginning  ");
 
 
