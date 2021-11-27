@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.zendesk.client.v1.Path.*;
@@ -109,6 +110,75 @@ class GetAllTicketServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(expectedFrame);
 
+    }
+
+    @Test
+    void whenCalledWithMenuInput() {
+        Frame expectedFrame = buildMenuFrame();
+
+        String input = Input.MENU.getValue();
+
+        Frame actualFrame = getAllTicketService.execute(input);
+
+        assertThat(actualFrame)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedFrame);
+    }
+
+    @Test
+    void whenMenuServiceCalledWithInvalidInput() {
+
+        List<String> validInput = List.of(Input.GET_ALL_TICKETS.getValue(),
+                Input.MENU.getValue(), Input.NEXT.getValue());
+
+        List<String> invalidInput = new ArrayList<>();
+
+        // add all invalid alphanumeric to invalid list and then test with each input
+        for(char i = 'a'; i <='z'; i++ ) {
+            String input = Character.toString(i);
+            if(!validInput.contains(input))
+                invalidInput.add(input);
+        }
+
+        for(int i = 0; i <= 9; i++ ) {
+            String input = Integer.toString(i);
+            if(!validInput.contains(input))
+                invalidInput.add(input);
+        }
+
+        Frame expectedFrame = MenuFrame.builder()
+                .header(Header.builder()
+                        .appName(APP_NAME_VIEW)
+                        .build())
+                .footer(Footer.builder()
+                        .customMessage(INVALID_INPUT)
+                        .getNext(GET_NEXT_VIEW)
+                        .getAllTickets(START_PAGING_AGAIN)
+                        .menu(MENU_VIEW)
+                        .quit(QUIT_VIEW)
+                        .build())
+                .build();
+
+        for(String input: invalidInput) {
+            Frame actualFrame = getAllTicketService.execute(input);
+            assertThat(actualFrame)
+                    .usingRecursiveComparison()
+                    .isEqualTo(expectedFrame);
+        }
+    }
+
+    private MenuFrame buildMenuFrame() {
+        return MenuFrame.builder()
+                .header(Header.builder()
+                        .greeting(GREETING_VIEW)
+                        .appName(APP_NAME_VIEW)
+                        .build())
+                .footer(Footer.builder()
+                        .getAllTickets(GET_ALL_TICKET_VIEW)
+                        .getTicket(GET_TICKET_VIEW)
+                        .quit(QUIT_VIEW)
+                        .build())
+                .build();
     }
 
     private URI buildGetAllTicketURI() throws URISyntaxException {
