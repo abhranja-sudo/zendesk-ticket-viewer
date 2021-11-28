@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zendesk.client.v1.Input;
 import com.zendesk.client.v1.TicketRetriever;
+import com.zendesk.client.v1.ZendeskResponseException;
 import com.zendesk.client.v1.controller.Controller;
 import com.zendesk.client.v1.model.getallticketresponse.*;
 import com.zendesk.client.v1.model.ticket.Ticket;
@@ -44,8 +45,11 @@ public class GetAllTicketService extends Service {
                 body = ticketRetriever.retrieve(buildGetAllTicketURI());
                 return processBody(body);
 
-            } catch (IOException | InterruptedException | URISyntaxException e) {
-                return processFatalException();
+            } catch (ZendeskResponseException e) {
+                return processFatalException(ZENDESK_ERROR);
+            }
+            catch (IOException | InterruptedException | URISyntaxException e) {
+                return processFatalException(FATAL_PROGRAM_ERROR);
             }
         }
 
@@ -55,8 +59,10 @@ public class GetAllTicketService extends Service {
                 String body = ticketRetriever.retrieve(URI.create(url));
                 return processBody(body);
 
+            } catch (ZendeskResponseException e) {
+                return processFatalException(ZENDESK_ERROR);
             } catch (IOException | InterruptedException e) {
-                return processFatalException();
+                return processFatalException(FATAL_PROGRAM_ERROR);
             }
 
         }
@@ -97,7 +103,7 @@ public class GetAllTicketService extends Service {
                 new GetTicketService(controller, ticketRetriever, objectMapper)));
     }
 
-    private Frame processFatalException() {
+    private Frame processFatalException(String message) {
         changeStateToMenuService();
         return MenuFrame.builder()
                 .header(Header.builder()

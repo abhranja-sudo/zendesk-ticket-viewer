@@ -30,5 +30,7 @@ public final class ViewConstants {
 
     public static final String FATAL_PROGRAM_ERROR = "Fatal program Error. Select from menu options to continue ";
 
+    public static final String ZENDESK_ERROR = "Error received from Zendesk server. Please try after sometime";
+
 
 }
