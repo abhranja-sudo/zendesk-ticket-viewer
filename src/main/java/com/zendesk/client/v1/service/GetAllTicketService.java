@@ -110,7 +110,7 @@ public class GetAllTicketService extends Service {
                         .appName(APP_NAME_VIEW)
                         .build())
                 .footer(Footer.builder()
-                        .customMessage(FATAL_PROGRAM_ERROR)
+                        .customMessage(message)
                         .getAllTickets(GET_NEXT_VIEW)
                         .getTicket(GET_TICKET_VIEW)
                         .quit(QUIT_VIEW)
