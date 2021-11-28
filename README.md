@@ -18,6 +18,7 @@ To test the application run the following commands.
 * Open src/main/resources/config.properties  
 
 * Replace the **xxxx** in *src/main/resources/config.properties* with **Token** in format *bearer yourtoken* 
+* **Base URL** can also be replaced in config.properties when testing with different URL
 
 * To run the application
 
@@ -31,7 +32,7 @@ Architectural Design
 
 
 The response to the user depends on the context user is currently in. In other words, the same user input should behave differently depending on the context user is in. Like pressing **n** (taking input for displaying next set of tickets) should be acceptable only if user is in the GetAllTicket screen. For rest of the context, It should be treated as invalid input.
-Thus, I chose to implement state design pattern to achieve varying state. It enabled me alter the behavior when its state changes.
+Thus, I chose to implement ***State Design Pattern*** to achieve varying state. It enabled me alter the behavior when its state changes.
 
 
 
