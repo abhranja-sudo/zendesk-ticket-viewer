@@ -67,6 +67,7 @@ public class GetTicketService extends Service {
             else if(e.getStatusCode() == 404) {
                 return buildMenuFrameWithError(RECORD_NOT_FOUND);
             }
+            return buildMenuFrameWithError(ZENDESK_ERROR);
         }
 
         catch (IOException | InterruptedException | URISyntaxException e) {
