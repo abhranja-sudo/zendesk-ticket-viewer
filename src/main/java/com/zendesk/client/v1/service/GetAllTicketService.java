@@ -63,7 +63,7 @@ public class GetAllTicketService extends Service {
                 return processBody(body);
 
             } catch (ZendeskResponseException e) {
-                return processFatalException(ZENDESK_ERROR);
+                return processZendeskException(e);
             }
             catch (IOException | InterruptedException | URISyntaxException e) {
                 return processFatalException(FATAL_PROGRAM_ERROR);
@@ -77,7 +77,7 @@ public class GetAllTicketService extends Service {
                 return processBody(body);
 
             } catch (ZendeskResponseException e) {
-                return processFatalException(ZENDESK_ERROR);
+                return processZendeskException(e);
             } catch (IOException | InterruptedException e) {
                 return processFatalException(FATAL_PROGRAM_ERROR);
             }
@@ -104,6 +104,12 @@ public class GetAllTicketService extends Service {
         return buildAllTicketFrame(response.getTicketList());
     }
 
+    private Frame processZendeskException(ZendeskResponseException e) {
+        if(e.getStatusCode() == 401)
+            return processFatalException(ZENDESK_INVALID_CRED);
+        return processFatalException(ZENDESK_ERROR);
+    }
+
     private void setUrlForFetchingNextPage(GetAllTicketResponse response) {
         url = response.getLinks().getNext();
     }
@@ -128,7 +134,7 @@ public class GetAllTicketService extends Service {
                         .build())
                 .footer(Footer.builder()
                         .customMessage(message)
-                        .getAllTickets(GET_NEXT_VIEW)
+                        .getAllTickets(GET_ALL_TICKET_VIEW)
                         .getTicket(GET_TICKET_VIEW)
                         .quit(QUIT_VIEW)
                         .build())

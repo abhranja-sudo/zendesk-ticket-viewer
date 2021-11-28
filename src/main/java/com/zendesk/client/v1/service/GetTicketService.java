@@ -78,6 +78,9 @@ public class GetTicketService extends Service {
             if(e.getStatusCode() == 400) {
                 return buildMenuFrameWithError(INVALID_INPUT);
             }
+            else if(e.getStatusCode() == 401) {
+                return buildMenuFrameWithError(ZENDESK_INVALID_CRED);
+            }
             else if(e.getStatusCode() == 404) {
                 return buildMenuFrameWithError(RECORD_NOT_FOUND);
             }

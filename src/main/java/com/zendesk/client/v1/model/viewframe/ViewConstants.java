@@ -32,5 +32,7 @@ public final class ViewConstants {
 
     public static final String ZENDESK_ERROR = "Error received from Zendesk server. Please try after sometime";
 
+    public static final String ZENDESK_INVALID_CRED = "Invalid zendesk api credential/token";
+
 
 }
