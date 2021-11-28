@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static com.zendesk.client.v1.ConfigLoader.BASE_URL;
+import static com.zendesk.client.v1.Config.baseUrl;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 
@@ -92,7 +92,7 @@ public class GetTicketService extends Service {
     }
 
     private URI buildURI(String id) throws URISyntaxException {
-        return new URIBuilder(BASE_URL + API_VERSION + GET_TICKET + id)
+        return new URIBuilder(baseUrl + API_VERSION + GET_TICKET + id)
                 .build();
     }
 

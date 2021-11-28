@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Properties;
 
-import static com.zendesk.client.v1.ConfigLoader.BASE_URL;
+import static com.zendesk.client.v1.Config.baseUrl;
 import static com.zendesk.client.v1.Path.API_VERSION;
 import static com.zendesk.client.v1.Path.GET_ALL_TICKETS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -118,7 +118,7 @@ class TicketRetrieverTest {
 
     private URI buildGetAllTicketURI() throws URISyntaxException {
 
-        return new URIBuilder(BASE_URL + API_VERSION + GET_ALL_TICKETS )
+        return new URIBuilder(baseUrl + API_VERSION + GET_ALL_TICKETS )
                 .addParameter("page[size]", Integer.toString(25))
                 .build();
     }

@@ -1,37 +1,16 @@
 package com.zendesk.client.v1;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import java.util.Properties;
-
-import static com.zendesk.client.v1.Path.CONFIG_PATH;
+import static com.zendesk.client.v1.Config.bearerToken;
 
 
 public class TicketRetriever {
-
-    private static final String JWT_KEY = "jwt.token";
-
-    //Get JWT Token from properties file
-    private static String bearerToken;
-    static {
-        try (InputStream input = new FileInputStream(CONFIG_PATH)) {
-
-            Properties prop = new Properties();
-            prop.load(input);
-            bearerToken = prop.getProperty(JWT_KEY);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public String retrieve(URI uri) throws IOException, InterruptedException {
 

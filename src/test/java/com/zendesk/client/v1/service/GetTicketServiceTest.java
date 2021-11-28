@@ -21,7 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
-import static com.zendesk.client.v1.ConfigLoader.BASE_URL;
+import static com.zendesk.client.v1.Config.baseUrl;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -179,7 +179,7 @@ class GetTicketServiceTest {
     }
 
     private URI buildURI(String id) throws URISyntaxException {
-        return new URIBuilder(BASE_URL + API_VERSION + GET_TICKET + id)
+        return new URIBuilder(baseUrl + API_VERSION + GET_TICKET + id)
                 .build();
     }
 

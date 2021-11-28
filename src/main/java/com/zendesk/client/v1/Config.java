@@ -7,15 +7,21 @@ import java.util.Properties;
 
 import static com.zendesk.client.v1.Path.CONFIG_PATH;
 
-public class ConfigLoader {
-    //Get Base url from properties file
-    public static String BASE_URL;
+/**
+ * Get config from config.properties
+ */
+public class Config {
+
+    public static String baseUrl;
+    public static String bearerToken;
+
     static {
         try (InputStream input = new FileInputStream(CONFIG_PATH)) {
 
             Properties prop = new Properties();
             prop.load(input);
-            BASE_URL = prop.getProperty("base.url");
+            baseUrl = prop.getProperty("base.url");
+            bearerToken = prop.getProperty("jwt.token");
 
         } catch (IOException e) {
             e.printStackTrace();
