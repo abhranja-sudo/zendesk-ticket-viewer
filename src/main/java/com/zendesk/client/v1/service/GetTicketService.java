@@ -17,6 +17,9 @@ import java.net.URISyntaxException;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 
+/**
+ * GetTicketService is responsible for handling user inputs when user is currently in GetTicket(get one ticket) context.
+ */
 public class GetTicketService extends Service {
 
     private static final String NO_INPUT = "No input. Please try entering again";
@@ -34,6 +37,16 @@ public class GetTicketService extends Service {
         this.ticketRetriever = ticketRetriever;
         this.objectMapper = objectMapper;
     }
+
+    /**
+     *
+     * @param input received from the user.
+     *              possible valid input:
+     *              1.  MENU - switch to menu context
+     *              2.  any valid integer - calls the ticketRetriever to get the tickets by ID
+     *
+     *              All other input should be treated as invalid
+     */
 
     @Override
     public Frame execute(String input) {

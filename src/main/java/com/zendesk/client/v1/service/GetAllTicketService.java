@@ -19,6 +19,9 @@ import java.util.List;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 
+/**
+ *   GetAllTicketService is responsible for handling user inputs when user is currently in GetAllTicket context
+ */
 public class GetAllTicketService extends Service {
 
     private String url;
@@ -33,6 +36,19 @@ public class GetAllTicketService extends Service {
         this.ticketRetriever = ticketRetriever;
         this.objectMapper = objectMapper;
     }
+
+    /**
+     *
+     * @param input received from the user.
+     *              possible valid input:
+     *              1.  GET_ALL_TICKETS - starts viewing the tickets from beginning
+     *              2.  NEXT - starts viewing next page of tickets
+     *              Note: If this is the last page of tickets, the context will switch to menu.
+     *
+     *              3.  MENU - switch to menu context
+     *
+     *              All other input should be treated as invalid
+     */
 
     @Override
     public Frame execute(String input) {

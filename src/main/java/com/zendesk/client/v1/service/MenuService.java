@@ -6,6 +6,9 @@ import com.zendesk.client.v1.model.viewframe.*;
 
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 
+/**
+ * MenuService is responsible for handling user inputs when user is currently in Menu(home)
+ */
 public class MenuService extends Service {
 
     private GetAllTicketService getAllTicketService;
@@ -18,6 +21,17 @@ public class MenuService extends Service {
         this.getAllTicketService = getAllTicketService;
         this.getTicketService = getTicketService;
     }
+
+    /**
+     *
+     * @param input received from the user.
+     *
+     *              possible valid input:
+     *              1.  GET_ALL_TICKET - change controller service state to getALlTicketService and let it process the input
+     *              2.  GET_TICKET - change controller service state to getTicket and return the user the frame asking for input
+     *
+     *              All other input should be treated as invalid
+     */
 
     @Override
     public Frame execute(String input) {
