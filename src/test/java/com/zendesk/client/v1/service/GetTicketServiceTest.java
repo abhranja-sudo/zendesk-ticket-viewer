@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
+import static com.zendesk.client.v1.ConfigLoader.BASE_URL;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;

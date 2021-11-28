@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static com.zendesk.client.v1.ConfigLoader.BASE_URL;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 

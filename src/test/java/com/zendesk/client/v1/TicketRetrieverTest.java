@@ -21,10 +21,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Properties;
 
-import static com.zendesk.client.v1.Path.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.zendesk.client.v1.ConfigLoader.BASE_URL;
+import static com.zendesk.client.v1.Path.API_VERSION;
+import static com.zendesk.client.v1.Path.GET_ALL_TICKETS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

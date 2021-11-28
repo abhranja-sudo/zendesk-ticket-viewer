@@ -11,10 +11,11 @@ import java.net.http.HttpResponse;
 
 import java.util.Properties;
 
+import static com.zendesk.client.v1.Path.CONFIG_PATH;
+
 
 public class TicketRetriever {
 
-    private static final String CONFIG_PATH = "src/main/resources/config.properties";
     private static final String JWT_KEY = "jwt.token";
 
     //Get JWT Token from properties file

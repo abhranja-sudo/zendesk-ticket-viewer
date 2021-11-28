@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import static com.zendesk.client.v1.ConfigLoader.BASE_URL;
 import static com.zendesk.client.v1.Path.*;
 import static com.zendesk.client.v1.model.viewframe.ViewConstants.*;
 
