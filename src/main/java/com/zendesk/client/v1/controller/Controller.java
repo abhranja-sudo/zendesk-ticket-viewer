@@ -12,6 +12,11 @@ import com.zendesk.client.v1.service.MenuService;
 import com.zendesk.client.v1.service.Service;
 import com.zendesk.client.v1.view.Viewer;
 
+/**
+ * Controller stores a reference to one of the concrete service objects and delegates to it all state-specific work.
+ * The controller communicates with the service object via the service abstract class. The controller exposes a changeServiceState()
+ * for passing it a new state object.
+ */
 public class Controller {
 
     private final Viewer viewer;
@@ -45,6 +50,9 @@ public class Controller {
         this.serviceState = service;
     }
 
+    /**
+     * Takes input from the viewer and delegates it to service to execute business logic
+     */
     public void run() {
         viewer.display(frame);
 

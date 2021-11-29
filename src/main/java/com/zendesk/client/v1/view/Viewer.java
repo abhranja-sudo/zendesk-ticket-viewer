@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
+/**
+ * Responsible for displaying prompt and taking user input.
+ */
 public class Viewer {
 
     public String prompt(String prompt) {
