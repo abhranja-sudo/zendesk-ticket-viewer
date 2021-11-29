@@ -49,5 +49,5 @@ The frame which get displayed on screen is ***modular*** and can be composed wit
 
 **More Design Choices:**
 
-1.    Used ***cursor pagination*** to page through the ticket instead offset pagination as according to link, Cursor pagination provides greatly improved performance when retrieving extremely large record sets. This effectively means if we chose to import large data at once, we will not have to change the existing way of doing things.
+1.    Used ***cursor pagination*** to page through the ticket instead offset pagination as according to [Zendesk documentation](https://developer.zendesk.com/documentation/developer-tools/pagination/comparing-cursor-pagination-and-offset-pagination/), Cursor pagination provides greatly improved performance when retrieving extremely large record sets. This effectively means if we chose to import large data at once, we will not have to change the existing way of doing things.
 2.    GetAllTicketService Only fetching 25 tickets at once  as user demands it as it helps keeping our service simpler. On the ***further iteration***, the user experience can be improved further by pre fetching at least 50 ticket ahead of the latest displayed ticket.
