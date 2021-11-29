@@ -1,5 +1,8 @@
 # Zendesk Ticket Viewer
 
+## Personal Information
+* Name: Abhishek Ranjan
+* Email: aranjan5694@sdsu.edu
 
 ## Requirements 🔧
 * Java version **11** or higher.
