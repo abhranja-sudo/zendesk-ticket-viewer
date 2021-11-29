@@ -32,7 +32,7 @@ Architectural Design
 
 
 The response to the user depends on the context user is currently in. In other words, the same user input should behave differently depending on the context user is in. Like pressing **n** (taking input for displaying next set of tickets) should be acceptable only if user is in the GetAllTicket screen. For rest of the context, It should be treated as invalid input.
-Thus, I chose to implement ***State Design Pattern*** to achieve varying state. It enabled me alter the behavior when its state changes.
+Thus, ***State Design Pattern*** seemed fit to achieve varying state. It enabled me alter the behavior when its state changes.
 
 
 
@@ -46,6 +46,7 @@ Thus, I chose to implement ***State Design Pattern*** to achieve varying state. 
 6.	***Viewer*** Responsible for displaying prompt and taking input.
 
 The frame which get displayed on screen is ***modular*** and can be composed with Header, Footer and the body which in-turn can be composed with varying options.
+This helped achieved building custom messages on screen for each input.
 
 **More Design Choices:**
 
