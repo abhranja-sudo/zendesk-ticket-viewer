@@ -50,8 +50,10 @@ class GetTicketServiceTest {
 
     @Test
     void whenCalledWithValidTicketId() throws URISyntaxException, IOException, InterruptedException {
+
         String input = "3";
         URI uri = buildURI(input);
+
         String JsonMockResponse = Files.toString(new File("src/test/resources/singleTicket.json"),
                 StandardCharsets.UTF_8);
 
@@ -59,6 +61,7 @@ class GetTicketServiceTest {
                 .thenReturn(JsonMockResponse);
 
         GetTicketResponse expectedResponse = objectMapper.readValue(JsonMockResponse, GetTicketResponse.class);
+
         Frame expectedFrame = buildTicketFrame(expectedResponse.getTicket());
 
         Frame actualFrame = getTicketService.execute(input);
@@ -73,6 +76,7 @@ class GetTicketServiceTest {
 
     @Test
     void whenCalledWithInvalidInput() throws URISyntaxException, IOException, InterruptedException {
+
         String input = "dsd";
         URI uri = buildURI(input);
 
@@ -97,6 +101,7 @@ class GetTicketServiceTest {
 
     @Test
     void whenCalledWithInputWhoseRecordIsNotFound() throws URISyntaxException, IOException, InterruptedException {
+
         String input = "103";
         URI uri = buildURI(input);
 
@@ -120,6 +125,7 @@ class GetTicketServiceTest {
 
     @Test
     void whenCalledWithMenuInput() {
+
         String input = Input.MENU.getValue();
 
         Frame expectedFrame = MenuFrame.builder()
@@ -146,6 +152,7 @@ class GetTicketServiceTest {
 
     @Test
     void whenNoTicketIdIsPassed() {
+
         String input = "";
 
         Frame expectedFrame = buildMenuFrameWithError(NO_INPUT);

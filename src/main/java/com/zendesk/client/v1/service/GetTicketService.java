@@ -44,7 +44,7 @@ public class GetTicketService extends Service {
      * @param input received from the user.
      *              possible valid input:
      *              1.  MENU - switch to menu context
-     *              2.  any valid integer - calls the ticketRetriever to get the tickets by ID
+     *              2.  any valid Integer - calls the ticketRetriever to get the tickets by ID
      *
      *              All other input should be treated as invalid
      */

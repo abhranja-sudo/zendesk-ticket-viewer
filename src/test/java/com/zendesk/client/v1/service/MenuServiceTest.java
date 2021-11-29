@@ -36,10 +36,6 @@ class MenuServiceTest {
         menuService = new MenuService(controller, getAllTicketService, getTicketService);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void whenMenuServiceCalledWithGetAllTicketInput() {
         String input = Input.GET_ALL_TICKETS.getValue();

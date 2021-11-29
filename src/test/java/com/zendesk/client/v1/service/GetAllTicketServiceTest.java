@@ -54,6 +54,9 @@ class GetAllTicketServiceTest {
     @Test
     void whenHavingMoreDataOnNextPage() throws IOException, InterruptedException, URISyntaxException {
 
+        //Simulate the getAllTicket input
+        String input = Input.GET_ALL_TICKETS.getValue();
+
         String JsonMockResponse = Files.toString(new File("src/test/resources/hasMoreTicketOnNextPage.json"),
                 StandardCharsets.UTF_8);
 
@@ -65,17 +68,18 @@ class GetAllTicketServiceTest {
 
         Frame expectedFrame = buildAllTicketFrame(expectedResponse.getTicketList());
 
-        String input = Input.GET_ALL_TICKETS.getValue();
         Frame actualFrame = getAllTicketService.execute(input);
 
         assertThat(actualFrame)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedFrame);
 
-        // State shouldn't change
+        // State shouldn't change if it has more ticket on next page
         Assertions.assertEquals(controller.getServiceState().getClass(), GetAllTicketService.class);
 
 
+        //Simulate getting nextPage as an input
+        String nextInput = Input.NEXT.getValue();
         String UriNextPage = "https://zccar.zendesk.com/api/v2/tickets.json?page%5Bafter%5D=eyJvIjoibmlj" +
                 "ZV9pZCIsInYiOiJhUmtBQUFBQUFBQUEifQ%3D%3D&page%5Bsize%5D=25";
 
@@ -84,21 +88,20 @@ class GetAllTicketServiceTest {
 
         expectedFrame = buildAllTicketFrame(expectedResponse.getTicketList());
 
-        String nextInput = Input.NEXT.getValue();
         actualFrame = getAllTicketService.execute(nextInput);
 
         assertThat(actualFrame)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedFrame);
 
-        // State shouldn't change
+        // State shouldn't change as there is more page left to show
         Assertions.assertEquals(controller.getServiceState().getClass(), GetAllTicketService.class);
     }
 
     @Test
     void whenCalledWithGetAllTicketInputHavingNoDataOnNextPage() throws IOException, InterruptedException, URISyntaxException{
 
-        //when total count of tickets is less than TICKET_PER_PAGE
+        String input = Input.GET_ALL_TICKETS.getValue();
 
         String JsonMockResponse = Files.toString(new File("src/test/resources/noTicketOnNextPage.json"),
                 StandardCharsets.UTF_8);
@@ -109,8 +112,6 @@ class GetAllTicketServiceTest {
         GetAllTicketResponse expectedResponse = objectMapper.readValue(JsonMockResponse, GetAllTicketResponse.class);
 
         Frame expectedFrame = buildAllTicketFrameForEndPage(expectedResponse.getTicketList());
-
-        String input = Input.GET_ALL_TICKETS.getValue();
 
         Frame actualFrame = getAllTicketService.execute(input);
 
@@ -125,9 +126,10 @@ class GetAllTicketServiceTest {
 
     @Test
     void whenCalledWithMenuInput() {
-        Frame expectedFrame = buildMenuFrame();
 
         String input = Input.MENU.getValue();
+
+        Frame expectedFrame = buildMenuFrame();
 
         Frame actualFrame = getAllTicketService.execute(input);
 

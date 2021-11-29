@@ -43,7 +43,7 @@ public class GetAllTicketService extends Service {
      * @param input received from the user.
      *              possible valid input:
      *              1.  GET_ALL_TICKETS - starts viewing the tickets from beginning
-     *              2.  NEXT - starts viewing next page of tickets
+     *              2.  NEXT - view next page of tickets
      *              Note: If this is the last page of tickets, the context will switch to menu.
      *
      *              3.  MENU - switch to menu context
@@ -78,7 +78,8 @@ public class GetAllTicketService extends Service {
 
             } catch (ZendeskResponseException e) {
                 return processZendeskException(e);
-            } catch (IOException | InterruptedException e) {
+            }
+            catch (IOException | InterruptedException e) {
                 return processFatalException(FATAL_PROGRAM_ERROR);
             }
 
