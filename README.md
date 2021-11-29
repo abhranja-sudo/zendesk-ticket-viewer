@@ -20,11 +20,18 @@ To test the application run the following commands.
 * Replace the **xxxx** in *src/main/resources/config.properties* with **Token** in format *bearer yourtoken* 
 * **Base URL** can also be replaced in config.properties when testing with different URL
 
-* To run the application
+* To run the application, go inside project directory
 
         cd zendesk-ticket-viewer
+        
+* On Mac/Linux
+
         ./mvnw clean install exec:java
         
+* Or on windows
+
+        mvnw.cmd clean install exec:java
+
      
 
 Architectural Design
@@ -46,7 +53,7 @@ Thus, ***State Design Pattern*** seemed fit to achieve varying state. It enabled
 6.	***Viewer*** Responsible for displaying prompt and taking input.
 
 The frame which get displayed on screen is ***modular*** and can be composed with Header, Footer and the body which in-turn can be composed with varying options.
-This helped achieved building custom messages on screen for each input.
+This helped achieved building custom messages on screen for each scenario.
 
 **More Design Choices:**
 
