@@ -53,7 +53,7 @@ Thus, ***State Design Pattern*** seemed fit to achieve varying state. It enabled
 6.	***Viewer*** Responsible for displaying prompt and taking input.
 
 The frame which get displayed on screen is ***modular*** and can be composed with Header, Footer and the body which in-turn can be composed with varying options.
-This helped achieved building custom messages on screen for each scenario.
+This helped achieved building custom frame to show on screen for each scenario.
 
 **More Design Choices:**
 
