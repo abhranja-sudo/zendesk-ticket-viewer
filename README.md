@@ -12,13 +12,9 @@ To test the application run the following commands.
 
        git clone https://github.com/abhranja-sudo/zendesk-ticket-viewer.git
        
-       
-* Import it in Intellij IDEA or any other IDE:
+* By default program will be able to run from my credential
 
-* Open src/main/resources/config.properties  
-
-* Replace the **xxxx** in *src/main/resources/config.properties* with **Token** in format *bearer yourtoken* 
-* **Base URL** can also be replaced in config.properties when testing with different URL
+* To add the custom credential, Open src/main/resources/config.properties and replace bearer token and base url
 
 * To run the application, go inside project directory
 
@@ -32,7 +28,7 @@ To test the application run the following commands.
 
         mvnw.cmd clean install exec:java
 
-     
+* Please note the above command will run all the unit tests as part of build.
 
 Architectural Design
 ---
