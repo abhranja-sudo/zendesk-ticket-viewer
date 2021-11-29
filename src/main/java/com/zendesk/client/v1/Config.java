@@ -26,5 +26,10 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //check if baseurl ends with '/', if not add it.
+        if(baseUrl.charAt(baseUrl.length() - 1) != '/') {
+            baseUrl = baseUrl + '/';
+        }
     }
 }
